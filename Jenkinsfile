@@ -1,12 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                // Clona el repositorio
-                git 'https://github.com/beatrizcespedes/backend-test-Tarea5.git'
-            }
-        }
         stage('Install Dependencies') {
             steps {
                 // Instala dependencias usando npm (para proyectos Node.js)
