@@ -1,25 +1,28 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                // Clona el repositorio desde la rama especificada
+                git branch: 'main', url: 'https://github.com/beatrizcespedes/backend-test-Tarea5.git'
+            }
+        }
         stage('Install Dependencies') {
             steps {
-                // Instala dependencias usando npm (para proyectos Node.js)
-                sh 'npm install'
-                  }
+                // Instala dependencias
+                sh 'npm install'  // O el comando correspondiente para tu gestor de paquetes
+            }
         }
-        // Puedes agregar más stages según necesites
+        // Agrega más etapas según necesites
     }
     post {
         always {
-            // Acciones que se ejecutan después de todas las etapas
             echo 'Pipeline completed.'
         }
         success {
-            // Acciones que se ejecutan si todas las etapas se completan con éxito
             echo 'Pipeline succeeded.'
         }
         failure {
-            // Acciones que se ejecutan si alguna etapa falla
             echo 'Pipeline failed.'
         }
     }
