@@ -10,7 +10,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Instala dependencias
-                sh 'npm install'  // O el comando correspondiente para tu gestor de paquetes
+                powershell 'npm install'  // O el comando correspondiente para tu gestor de paquetes
             }
         }
         // Agrega más etapas según necesites
