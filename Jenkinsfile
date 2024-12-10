@@ -16,7 +16,7 @@ pipeline {
         }
         stage ('test'){
             steps{
-                powershell 'npm run test' //ejecuta pruebas
+                powershell 'npm test' //ejecuta pruebas
             }
         }
         }
