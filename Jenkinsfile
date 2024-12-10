@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('Build'){
             steps{
-                powershell 'npm build' //ejecuta build
+                powershell 'npm run build' //ejecuta build
             }
         }
         }
