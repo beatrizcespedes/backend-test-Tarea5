@@ -12,6 +12,11 @@ pipeline {
                 // Instala dependencias
                 powershell 'npm install'  // O el comando correspondiente para tu gestor de paquetes
             }
+        stage ('test'){
+            steps{
+                powershell 'npm run test' //ejecuta pruebas
+            }
+        }
         }
         // Agrega más etapas según necesites
     }
