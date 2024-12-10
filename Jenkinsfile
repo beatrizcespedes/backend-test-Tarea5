@@ -7,16 +7,21 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/beatrizcespedes/backend-test-Tarea5.git'
             }
         }
-        stage('Install Dependencies') 
+        stage('Instalar Dependencias') 
         {
             steps {
                 // Instala dependencias
                 powershell 'npm install'  // O el comando correspondiente para tu gestor de paquetes
             }
         }
-        stage ('test'){
+        stage ('Hacer pruebas'){
             steps{
                 powershell 'npm test' //ejecuta pruebas
+            }
+        }
+        stage ('Build'){
+            steps{
+                powershell 'npm build' //ejecuta build
             }
         }
         }
