@@ -21,7 +21,7 @@ pipeline {
         }
         }
         // Agrega más etapas según necesites
-    }
+    
     post {
         always {
             echo 'Pipeline completed.'
@@ -33,4 +33,4 @@ pipeline {
             echo 'Pipeline failed.'
         }
     }
-
+}
