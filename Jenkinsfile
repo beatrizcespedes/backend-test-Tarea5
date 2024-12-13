@@ -34,14 +34,13 @@ pipeline {
 
         stage('Tag & Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'DockerJenkins', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    bat """
-                        docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD% ${NEXUS_REGISTRY}
-                        docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                        docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest
-                        docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                        docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest
-                    """
+                withCredentials([usernamePassword(credentialsId: 'DockerJenkins', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
+                {
+                    bat """ echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin ${NEXUS_REGISTRY} 
+                    docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER} 
+                    docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest 
+                    docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER} 
+                    docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest """
                 }
             }
         }
