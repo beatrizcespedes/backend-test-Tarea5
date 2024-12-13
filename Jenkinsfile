@@ -3,9 +3,8 @@ pipeline {
 environment {
         DOCKER_CREDENTIALS_ID = 'docker-credentials'
         DOCKER_REGISTRY_URL = 'nexus.yourcompany.com'
-        IMAGE_NAME = 'your-image-name'
-        
-    }
+        IMAGE_NAME = 'nexus'
+            }
 
     stages {
         stage('Checkout') {
