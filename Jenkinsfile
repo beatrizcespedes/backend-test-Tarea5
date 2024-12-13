@@ -42,12 +42,10 @@ pipeline {
 
         stage('Tag & Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry("http://${NEXUS_REGISTRY}", DOCKER_CREDENTIALS) {
-                        def image = docker.image("${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
-                        image.push()
-                        image.push('latest')
-                    }
+                bat """ docker login -u %DOCKER_CREDENTIALS% -p %DOCKER_PASSWORD% ${NEXUS_REGISTRY}
+                docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER} 
+                docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest 
+                docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER} docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest """
                 }
             }
         }
