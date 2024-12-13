@@ -1,10 +1,10 @@
 pipeline {
     agent any
 environment {
-        environment { DOCKER_CREDENTIALS_ID = 'docker-credentials'
-         NEXUS_REGISTRY = 'http://localhost:8081/repository/tarea5/'
-         IMAGE_NAME = 'nexus' 
-            }
+        environment { 
+        DOCKER_CREDENTIALS = 'docker-credentials'
+        NEXUS_REGISTRY = 'http://localhost:8081/repository/tarea5/'
+        IMAGE_NAME = 'nexus' 
 
     stages {
         stage('Checkout') {
