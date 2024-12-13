@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NEXUS_REGISTRY = 'localhost:8085/docker-repo'
-        IMAGE_NAME = 'my-image'
+        NEXUS_REGISTRY = 'localhost:8081/tarea5'
+        IMAGE_NAME = 'nexus'
         }
 
     stages {
