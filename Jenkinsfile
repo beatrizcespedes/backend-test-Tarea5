@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS = 'docker-credentials'
-        NEXUS_REGISTRY = 'localhost:8085/docker-repo'
-        IMAGE_NAME = 'my-image'
+        NEXUS_REGISTRY = 'http://localhost:8081/repository/tarea5/'
+        IMAGE_NAME = 'nexus'
         }
 
     stages {
