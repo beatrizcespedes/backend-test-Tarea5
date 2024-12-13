@@ -1,5 +1,12 @@
 pipeline {
     agent any
+environment {
+        DOCKER_CREDENTIALS_ID = 'docker-credentials'
+        DOCKER_REGISTRY_URL = 'nexus.yourcompany.com'
+        IMAGE_NAME = 'your-image-name'
+        
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -25,8 +32,26 @@ pipeline {
             }
         }
         }
-        // Agrega más etapas según necesites
-    
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def app = docker.build("${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Tag & Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("https://${DOCKER_REGISTRY_URL}", DOCKER_CREDENTIALS_ID) {
+                        def image = docker.image("${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                        image.push()
+                        image.push('latest')
+                    }
+                }
+            }
+        }
+    }
+        
     post {
         always {
             echo 'Pipeline completed.'
@@ -39,3 +64,4 @@ pipeline {
         }
     }
 }
+
