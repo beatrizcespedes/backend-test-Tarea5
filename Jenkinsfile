@@ -1,48 +1,61 @@
 pipeline {
     agent any
-environment {
-        environment { 
+
+    environment {
         DOCKER_CREDENTIALS = 'docker-credentials'
-        NEXUS_REGISTRY = 'http://localhost:8081/repository/tarea5/'
-        IMAGE_NAME = 'nexus' 
+        NEXUS_REGISTRY = 'localhost:8085/docker-repo'
+        IMAGE_NAME = 'my-image'
+        }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Clona el repositorio desde la rama especificada
-                git branch: 'main', url: 'https://github.com/beatrizcespedes/backend-test-Tarea5.git'
-            }
-        }
-        stage('Instalar Dependencias') 
-        {
-            steps {
-                // Instala dependencias
-                powershell 'npm install'  // O el comando correspondiente para tu gestor de paquetes
-            }
-        }
-        stage ('Hacer pruebas'){
-            steps{
-                powershell 'npm test' //ejecuta pruebas
-            }
-        }
-        stage ('Build'){
-            steps{
-                powershell 'npm run build' //ejecuta build
-            }
-        }
-        }
-        stage('Build Docker Image') {
+        stage('Install Dependencies') {
             steps {
                 script {
-                    def app = docker.build("${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    sh 'npm install' // O el comando correspondiente a tu gestor de dependencias
                 }
             }
         }
+
+        stage('Testing') {
+            steps {
+                script {
+                    sh 'npm test' // O el comando correspondiente a tus pruebas
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'npm run build' // O el comando correspondiente a la construcción de tu proyecto
+                }
+            }
+        }
+
+        
+        stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
         stage('Tag & Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY_URL}", DOCKER_CREDENTIALS_ID) {
-                        def image = docker.image("${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    docker.withRegistry("http://${NEXUS_REGISTRY}", DOCKER_CREDENTIALS) {
+                        def image = docker.image("${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
                         image.push()
                         image.push('latest')
                     }
@@ -50,10 +63,11 @@ environment {
             }
         }
     }
-        
+
     post {
         always {
             echo 'Pipeline completed.'
+            cleanWs() // Limpieza después del pipeline
         }
         success {
             echo 'Pipeline succeeded.'
@@ -62,5 +76,4 @@ environment {
             echo 'Pipeline failed.'
         }
     }
-}
 }
