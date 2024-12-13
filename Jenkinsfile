@@ -48,7 +48,7 @@ pipeline {
                 docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER} docker push ${NEXUS_REGISTRY}/${IMAGE_NAME}:latest """
                 }
             }
-        }
+        
     }
 
     post {
