@@ -11,7 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'npm install' // O el comando correspondiente a tu gestor de dependencias
+                    bat 'npm install' // O el comando correspondiente a tu gestor de dependencias
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Testing') {
             steps {
                 script {
-                    sh 'npm test' // O el comando correspondiente a tus pruebas
+                    bat 'npm test' // O el comando correspondiente a tus pruebas
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'npm run build' // O el comando correspondiente a la construcción de tu proyecto
+                    bat 'npm run build' // O el comando correspondiente a la construcción de tu proyecto
                 }
             }
         }
