@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NEXUS_REGISTRY = 'http://localhost:8081/tarea5'
+        NEXUS_REGISTRY = 'localhost:8081/tarea5/nexus'
         IMAGE_NAME = 'nexus'
         }
 
